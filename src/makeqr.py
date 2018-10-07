@@ -21,8 +21,7 @@ def generateQrcode(data, version=1, error_correction=qrcode.constants.ERROR_CORR
     return boolToInt(np.array(img))
 
 def decodeQrcode(data):
-    qrImg = Image.fromarray(np.uint8(data))
-    codes = zbarlight.scan_codes('qrcode', qrImg)
+    codes = zbarlight.scan_codes('qrcode', Image.fromarray(np.uint8(data)))
     for i in codes:
         codes = i.decode('utf-8', 'ignore')
 

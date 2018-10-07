@@ -43,8 +43,7 @@ def psnr(cover, stego):
 
 def _DWT_gray(coverImageName, watermarkImageName, save=False):
     coverImage = cv2.imread(imgPath+coverImageName)
-    watermarkImage = cv2.imread(imgPath+watermarkImageName)
-    watermarkImage = cv2.resize(watermarkImage, (int(len(coverImage)/2), int(len(coverImage)/2)))
+    watermarkImage = cv2.resize(cv2.imread(imgPath+watermarkImageName), (int(len(coverImage)/2), int(len(coverImage)/2)))
 
     # _show(cv2.imread(imgPath+coverImageName), title='Cover Image')
     # _show(cv2.imread(imgPath+watermarkImageName), title='Watermark Image')
@@ -118,8 +117,7 @@ def _DWT_color(coverImageName, watermarkImageName, save=False):
 
 def _FFT(coverImageName, watermarkImageName, save=False):
     coverImage = cv2.imread(imgPath + coverImageName)
-    watermarkImage = cv2.imread(imgPath + watermarkImageName)
-    watermarkImage = cv2.resize(watermarkImage, (int(len(coverImage)), int(len(coverImage))))
+    watermarkImage = cv2.resize(cv2.imread(imgPath + watermarkImageName), (int(len(coverImage)), int(len(coverImage))))
 
     # _show(coverImage, title='Cover Image')
     # _show(watermarkImage, title='watermarkImage')
@@ -153,7 +151,6 @@ def _calcIFFT(coverMat, watermarkedMat, strength):
     shiftedFFT_watermarked = np.fft.fftshift(np.fft.fft2(watermarkedMat))
     shiftedFFT_cover = np.fft.fftshift(np.fft.fft2(coverMat))
     extractMat = np.abs(shiftedFFT_watermarked - shiftedFFT_cover) / strength
-    # extractMat = np.abs(shiftedFFT_cover-shiftedFFT_watermarked) / strength
     extractImage = extractMat
 
     return extractImage
@@ -164,17 +161,8 @@ def _saveGrayImg(imgName):
     gray_img.save(outImgPath+'gray'+imgName)
 
 def _show(img,title='title'):
-
     img_s = np.uint8(img.real)
     img_resize = cv2.resize(img_s, (512, 512))
     cv2.imshow(title, img_resize)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-
-def main():
-    embedQrcodeUseDWT('最大で400文字ぐらい埋め込むことができます。')
-    print(decodeQrcode())
-
-
-if __name__ == '__main__':
-    main()

@@ -16,7 +16,7 @@ sys.path.append('..')
 from src import imageInImageWatermarking as iw
 
 # デフォルトに使用するフォントを変更する
-resource_add_path('./tools/fonts')
+resource_add_path('../tools/fonts/')
 LabelBase.register(DEFAULT_FONT, 'ipaexg.ttf')
 
 
