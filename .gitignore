@@ -1,0 +1,6 @@
+.idea/
+.vscode/
+images/
+.DS_Store
+*/__pycache__/
+tools/fonts/
