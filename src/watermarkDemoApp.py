@@ -7,18 +7,16 @@ from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.resources import resource_add_path
 from kivy.uix.modalview import ModalView
 from kivy.uix.popup import Popup
-from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 
 import os
 import sys
 sys.path.append('..')
-from watermarking import imageInImageWatermarking as iw
-from PIL import Image
+from src import imageInImageWatermarking as iw
 
 # デフォルトに使用するフォントを変更する
-resource_add_path('./fonts')
+resource_add_path('./tools/fonts')
 LabelBase.register(DEFAULT_FONT, 'ipaexg.ttf')
 
 

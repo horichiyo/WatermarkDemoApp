@@ -1,15 +1,10 @@
-import pywt
 import math
-import qrcode
 import numpy as np
 from PIL import Image
 
 
 outImgPath = '../images/result/'
 imgPath    = '../images/'
-imgName    = 'balls.JPG'
-wavelet    = 'db1'  # wavelist.txtにどれを指定できるか書いてある
-level      = 1
 
 
 def imgNormalization(src_img):
@@ -77,64 +72,6 @@ def getImgSizeAndData(imgname):
 	width = img.shape[1]
 	height = img.shape[0]
 	return width, height, img_y, img_cr, img_cb
-
-
-def main_tmp():
-	# これいる？
-	# 画像を取得しグレースケールに変換
-	# DWTを行いxy高周波成分を全て0に置換する
-	# 画像に戻す
-
-	img = np.array(Image.open(imgPath+imgName), 'f')
-	gray_img = Image.fromarray(np.uint8(img)).convert('L')
-	gray_img.save(outImgPath+imgName)
-
-	# Wavelet変換
-	# coeffs = pywt.wavedec2(gray_img,wavelet=wavelet,level=level) #wavedec2 [cAn, (cHn, cVn, cDn), … (cH1, cV1, cD1)] : list  are return.
-	# coeffs_show(coeffs)
-
-	# 別Ver（1度のウェーブレットのビット置換）
-	coeffs = pywt.dwt2(gray_img, wavelet=wavelet)
-	cA, (cH, cV, cD) = coeffs
-	# 電子透かしで高周波成分を操作する場合cH_V_Dのどれかを選択する(半分のピクセル数になる)とりあえずcDを全部0にしてみる
-	cD_a = np.full_like(cD, 0.000)
-	coeffs_a = cA, (cH, cV, cD_a)
-
-	coeffsShow(coeffs)
-	coeffsShow(coeffs_a)
-
-	# 復調
-	tmp = pywt.waverec2(coeffs_a, wavelet=wavelet)
-	Image.fromarray(np.uint8(tmp)).save(outImgPath+'dwt_'+imgName)
-
-
-def main():
-	# 画像を取得し輝度値に対してDWTを行う
-	# xyの高周波成分を任意のデータで置換して画像を表示する
-	width, hight, img_y, img_cr, img_cb = getImgSizeAndData(imgName)
-
-	# レベル1のウェーブレット -> ビット置換
-	coeffs = pywt.dwt2(img_y, wavelet=wavelet)
-	cA, (cH, cV, cD) = coeffs
-	# 電子透かしで高周波成分を操作する場合cH_V_Dのどれかを選択する(半分のピクセル数になる)とりあえずcDを全部0にしてみる
-	cD_a = np.full_like(cD, 10.000)
-	coeffs_r = cA, (cH, cV, cD_a)
-
-	coeffsShow(coeffs)
-	coeffsShow(coeffs_r)
-
-	# 復調
-	img_y_f = pywt.waverec2(coeffs_r, wavelet=wavelet)
-	# 輝度値がマイナスの場合にマイナスを消す処理(+255)を追加するけど，抽出がうまく行かなくなる可能性あり(画像も綺麗にならんかった)
-	img_y_f = np.where(img_y_f < 0.0, 255+img_y_f, img_y_f)
-
-	saveYcbcrAsImg('dwt_result'+imgName, img_y_f, img_cr, img_cb)
-
-
-
-if __name__ == '__main__':
-	main()
-
 
 
 

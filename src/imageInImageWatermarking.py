@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 sys.path.append('..')
-from Tools import makeqr
+from src import makeqr
 import pywt
 import cv2
 import math
@@ -167,7 +167,6 @@ def _show(img,title='title'):
 
     img_s = np.uint8(img.real)
     img_resize = cv2.resize(img_s, (512, 512))
-    cv2.WINDOW_NORMAL
     cv2.imshow(title, img_resize)
     cv2.waitKey(0)
     cv2.destroyAllWindows()

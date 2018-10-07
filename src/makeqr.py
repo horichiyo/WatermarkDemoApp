@@ -18,8 +18,6 @@ def generateQrcode(data, version=1, error_correction=qrcode.constants.ERROR_CORR
     qr.make(fit=True)
     img = qr.make_image(fill_color="black", back_color="white")
 
-    print('Pixel size is '+str(img.pixel_size)+'.')
-
     return boolToInt(np.array(img))
 
 def decodeQrcode(data):
@@ -33,15 +31,3 @@ def decodeQrcode(data):
 def qrsizeChange(array):
     next_pow2 =  int(np.log2(2 ** np.ceil(np.log2(len(array)))))
     return np.asarray(Image.fromarray(np.uint8(array)).resize((int(2**next_pow2), int(2**next_pow2))))
-
-def main():
-    # encode
-    tmp = generateQrcode('私はオーストラリアでInternshipをしています！')
-    # decode
-    tmp_a = qrsizeChange(tmp)
-    print(decodeQrcode(tmp_a))
-
-
-
-if __name__ == '__main__':
-    main()
