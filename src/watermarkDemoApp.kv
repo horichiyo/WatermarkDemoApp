@@ -1,0 +1,146 @@
+# -*- coding: utf-8 -*-
+AppWidget:
+
+<AppWidget>:
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.size
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        TextInput:
+            id: text_box
+            text: 'Please enter the text here that you want to embed in the image.'
+            size_hint_y: 0.5
+            font_size: 68
+            focus: True
+            on_text_validate: root.embedButtonClicked()
+
+        BoxLayout:
+            Label:
+                id: label1
+                font_size: 50
+                text: 'Cover ->'
+            Image:
+                allow_stretch: True
+                source: root.cover_image_path
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y
+            Image:
+                id: img1
+                allow_stretch: True
+                source: root.stego_image_src
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y
+            Label:
+                id: label1
+                font_size: 50
+                text: '<- Stego'
+
+        Label:
+            size_hint_y: 0.1
+            text: 'PSNR: '+root.psnr+'[dB]'
+            font_size: 30
+
+        BoxLayout:
+            size_hint_y: 0.1
+            Button:
+                id: button1
+                text: 'Embed'
+                font_size: 68
+                on_press: root.embedButtonClicked()
+            Button:
+                id: button2
+                text: 'Extract'
+                font_size: 68
+                on_press: root.extractButtonClicked()
+            Button:
+                id: button3
+                text: 'Change'
+                font_size: 68
+                on_press: root.changeButtonClicked()
+            Button:
+                id: button4
+                text: 'Mode:'+root.mode
+                font_size: 68
+                on_press: root.modeButtonClicked()
+
+
+<ManualView>:
+    size_hint: None, None
+    size: 800, 500
+    auto_dismiss: False
+
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "I need to write description in this area."
+            font_size: 30
+
+        BoxLayout:
+            padding: 200, 100
+            Button:
+                text: "OK"
+                on_press: root.clearButtonClicked()
+
+<ModeSelectPopUp>:
+    orientation: 'vertical'
+
+    Label:
+        size_hint: 1, .9
+        text: root.text
+
+    BoxLayout:
+        size_hint: 1, .1
+        orientation: 'horizontal'
+        Button:
+            size_hint: .5, 1
+            text: 'FFT'
+            on_release: root.fft()
+        Button:
+            size_hint: .5, 1
+            text: 'DWT'
+            on_release: root.dwt()
+
+
+<ExtractMessageView>:
+    size_hint: 1, 1
+    auto_dismiss: False
+
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: root.extract_message
+            font_size: 30
+
+        BoxLayout:
+            Button:
+                size_hint: .8, .2
+                text: "OK"
+                on_press: root.clearButtonClicked()
+
+
+<PopupChooseFile>:
+    orientation: "vertical"
+    canvas:
+        Color:
+            rgba: 0, 0, .4, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    FileChooserIconView:
+        size_hint: 1, .9
+        path: root.joined_path
+        on_submit: root.select(self.selection[0])
+
+    BoxLayout:
+        size_hint: 1, .1
+        Button:
+            text: "Cancel"
+            background_color: 0, .5, 1, 1
+            on_release: root.cancel()
