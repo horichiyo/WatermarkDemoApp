@@ -1,5 +1,5 @@
 import qrcode
-import zbarlight
+from pyzbar.pyzbar import decode
 import numpy as np
 from PIL import Image
 
@@ -21,11 +21,9 @@ def generateQrcode(data, version=1, error_correction=qrcode.constants.ERROR_CORR
     return boolToInt(np.array(img))
 
 def decodeQrcode(data):
-    codes = zbarlight.scan_codes('qrcode', Image.fromarray(np.uint8(data)))
-    for i in codes:
-        codes = i.decode('utf-8', 'ignore')
+    codes = decode(Image.fromarray(np.uint8(data)))
+    return codes[0][0].decode('utf-8', 'ignore')
 
-    return codes
 
 def qrsizeChange(array):
     next_pow2 =  int(np.log2(2 ** np.ceil(np.log2(len(array)))))
