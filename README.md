@@ -6,8 +6,10 @@
 - Kivyのインストールは[公式](https://pyky.github.io/kivy-doc-ja/installation/installation-osx.html)を参考にしました。
 - 公式の方にも書いてありますが，MacであればHomebrewとpipを使うのが一番簡単だと思います。
 - Cythonを先にインストールしないと入らないので注意。
+- `tools/fonts`に`ipaexg.ttf`を各自で入れてください。フォント用のファイルです。
 
 ### 使い方
+- `watermarkDemoApp.py`を実行してください。
 - 画面上部のテキストボックスに埋め込みたい文字を入力します。
 - `Embed`ボタンを押すと表示されているカバー画像に情報が埋め込まれ，右側にステゴ画像が表示されます。
 - `Extract`ボタンを押すと埋め込まれた情報を抽出して，画面に文字を表示します。
